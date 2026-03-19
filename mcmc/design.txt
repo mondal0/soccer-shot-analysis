@@ -1,0 +1,147 @@
+Soccer_Data <- read.csv("data/Soccer_data.csv")
+
+n = nrow(Soccer_Data)
+
+m_p1 = 524
+m_p2 = 112
+m_p3 = 379
+m_p4 = 245
+m_p5 = 342
+m_p = 5
+
+m_a = 35 
+m_k = 7
+
+m_b = 2 
+m_g = 2 
+m_t = 6 
+m_v = 7 
+m_s = 11
+
+m_h = 2 
+m_psi = 57*74 
+
+m_1 =57
+m_2 =74
+
+
+#M = matrix(0, n, m_M)
+P1 = matrix(0, n, m_p1)
+P2 = matrix(0, n, m_p2)
+P3 = matrix(0, n, m_p3)
+P4 = matrix(0, n, m_p4)
+P5 = matrix(0, n, m_p5)
+P = matrix(0, n, m_p)
+
+A1 = A2 = AH1 = AH2 = matrix(0, n, m_a)
+K = matrix(0, n, m_k)
+
+B  = matrix(0, n, m_b)
+G = matrix(0, n, m_g)
+Ti = matrix(0, n, m_t) #T matrix
+V = matrix(0, n, m_v)
+S = SH = matrix(0, n, m_s)
+
+
+H = matrix(0, n, m_h)
+Fs = matrix(0, n, m_psi) # F matrix 
+
+for(i in 1:n){
+  #M[i, (as.numeric(Soccer_Data$match_id[i]))] = 1
+  P[i, (as.numeric(Soccer_Data$player_position[i]))] = 1
+  
+  temp1 = Soccer_Data$player_position[i]
+  if(temp1 == 1) P1[i, (as.numeric(Soccer_Data$player_pos[i]))] = 1
+  if(temp1 == 2) P2[i, (as.numeric(Soccer_Data$player_pos[i]))] = 1
+  if(temp1 == 3) P3[i, (as.numeric(Soccer_Data$player_pos[i]))] = 1
+  if(temp1 == 4) P4[i, (as.numeric(Soccer_Data$player_pos[i]))] = 1
+  if(temp1 == 5) P5[i, (as.numeric(Soccer_Data$player_pos[i]))] = 1
+  
+  A1[i, as.numeric(Soccer_Data$home_team[i]) ] = 1
+  A2[i, as.numeric(Soccer_Data$away_team[i]) ] = 1
+  K[i, as.numeric(Soccer_Data$fa[i])] = 1
+  
+  B[i, (as.numeric(Soccer_Data$h_a[i])+1)] = 1
+  G[i, (as.numeric(Soccer_Data$situation[i])+1)] = 1
+  Ti[i, as.numeric(Soccer_Data$minute[i])] = 1
+  V[i, (as.numeric(Soccer_Data$gd[i])+4)] = 1
+  S[i, as.numeric(Soccer_Data$season[i])] = 1
+  
+  if(as.numeric(Soccer_Data$h_a[i]) == 1){
+    SH[i, as.numeric(Soccer_Data$season[i])] = 1
+    AH1[i, as.numeric(Soccer_Data$home_team[i]) ] = 1
+    AH2[i, as.numeric(Soccer_Data$away_team[i]) ] = 1
+  }
+  
+  H[i, (as.numeric(Soccer_Data$shot_type[i])+1)] = 1
+  Fs[i, as.numeric(Soccer_Data$cartesian[i])] = 1
+}
+
+#M[which(M[,1]==1),]= M[which(M[,1]==1),]-1
+P[which(P[,1]==1),]= P[which(P[,1]==1),]-1
+P1[which(P1[,1]==1),]= P1[which(P1[,1]==1),]-1
+P2[which(P2[,1]==1),]= P2[which(P2[,1]==1),]-1
+P3[which(P3[,1]==1),]= P3[which(P3[,1]==1),]-1
+P4[which(P4[,1]==1),]= P4[which(P4[,1]==1),]-1
+P5[which(P5[,1]==1),]= P5[which(P5[,1]==1),]-1
+
+A1[which(A1[,1]==1),]= A1[which(A1[,1]==1),]-1
+A2[which(A2[,1]==1),]= A2[which(A2[,1]==1),]-1
+K[which(K[,1]==1),]= K[which(K[,1]==1),]-1
+
+Ti[which(Ti[,1]==1),]= Ti[which(Ti[,1]==1),]-1
+V[which(V[,1]==1),]= V[which(V[,1]==1),]-1
+S[which(S[,1]==1),]= S[which(S[,1]==1),]-1
+
+SH[which(SH[,1]==1),]= SH[which(SH[,1]==1),]-1
+AH1[which(AH1[,1]==1),]= AH1[which(AH1[,1]==1),]-1
+AH2[which(AH2[,1]==1),]= AH2[which(AH2[,1]==1),]-1
+
+
+#M= M[,2:m_M]
+P= P[,2:m_p]
+P1= P1[,2:m_p1]
+P2= P2[,2:m_p2]
+P3= P3[,2:m_p3]
+P4= P4[,2:m_p4]
+P5= P5[,2:m_p5]
+
+A1= A1[,2:m_a]
+A2= A2[,2:m_a]
+K=K[,2:m_k]
+
+B=B[,1]
+G=G[,1]
+Ti=Ti[,2:m_t]
+V=V[,2:m_v]
+S= S[,2:m_s]
+
+SH= SH[,2:m_s]
+AH1= AH1[,2:m_a]
+AH2= AH2[,2:m_a]
+
+H=H[,1]
+
+
+
+#m_M=m_M-1
+m_p=m_p-1
+m_p1=m_p1-1
+m_p2=m_p2-1
+m_p3=m_p3-1
+m_p4=m_p4-1
+m_p5=m_p5-1
+
+m_a=m_a-1
+m_k=m_k-1
+
+m_b=m_g=m_h=1
+m_t=m_t-1
+m_v=m_v-1
+m_s=m_s-1
+
+# spatial Q
+
+Lr = diff(diag(m_1))
+Lc = diff(diag(m_2))
+Q_psi = diag(m_2) %x% crossprod(Lr) + crossprod(Lc) %x% diag(m_1) 
